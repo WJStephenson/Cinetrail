@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import './Slider.css'
 import axios from 'axios'
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md'
+import Genres from '../Genres/Genres'
+import Rating from '../Rating/Rating'
+import { Link } from 'react-router-dom'
 
 function Slider({ baseURL, apiKey }) {
 
@@ -9,6 +12,7 @@ function Slider({ baseURL, apiKey }) {
 
     //store upcoming movies in state from api call when page loads
     const [upcomingMovies, setUpcomingMovies] = useState([])
+    const [movieRatings, setMovieRatings] = useState([])
 
     //store current image to show on slider
     const [index, setIndex] = useState(0)
@@ -19,6 +23,8 @@ function Slider({ baseURL, apiKey }) {
         axios.get(`${baseURL}/movie/upcoming?api_key=${apiKey}`)
             .then(res => {
                 setUpcomingMovies(res.data.results)
+                const ratings = res.data.results.map(movie => movie.vote_average / 2)
+                setMovieRatings(ratings)
             })
             .catch(err => console.log(err))
     }, [])
@@ -57,7 +63,10 @@ function Slider({ baseURL, apiKey }) {
                 <div className='slider-info'>
                     <h1>{upcomingMovies[index]?.title}</h1>
                     <p className='slider-description'>{upcomingMovies[index]?.overview.slice(0, 130)}</p>
+                    <Genres movieGenres={upcomingMovies[index]?.genre_ids} apiKey={apiKey} baseURL={baseURL} />
                     <p className='release-date'>{upcomingMovies[index]?.release_date}</p>
+                    <Rating movieRating={movieRatings[index]}/>
+                    <Link to={`/moviedetails/${upcomingMovies[index]?.id}`} className='see-details'>See Details</Link>
                 </div>
             </div>
         </div>
