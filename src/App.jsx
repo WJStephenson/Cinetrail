@@ -1,28 +1,47 @@
-import './App.css'
-import Header from './components/Header/Header'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import ThemeContextProvider from './contexts/ThemContext'
-import Homepage from './pages/Homepage/Homepage'
+import "./App.css";
+import Header from "./components/Header/Header";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CombinedContextProvider from "./contexts/index";
+import HomePage from "./pages/HomePage/HomePage";
+import MovieDetails from "./pages/MovieDetails/MovieDetails";
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/SignUp/SignUp";
+import MyFavorites from "./pages/MyFavorites/MyFavorites";
 
 function App() {
-
   const apiKey = import.meta.env.VITE_API_KEY;
-  const baseURL = import.meta.env.VITE_BASE_URL;
-
-  console.log(import.meta.env.VITE_API_KEY)
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   return (
-    <ThemeContextProvider>
+    <CombinedContextProvider>
       <BrowserRouter>
-        <Header />
-
+        <Header apiKey={apiKey} baseUrl={baseUrl} />
         <Routes>
-          <Route path='/' element={<Homepage apiKey={apiKey} baseURL={baseURL} />} />
+          <Route
+            path="/"
+            element={<HomePage apiKey={apiKey} baseUrl={baseUrl} />}
+          />
+          <Route
+            path={"/movieDetails/:movieId"}
+            element={
+              <MovieDetails
+                apiKey={apiKey}
+                baseUrl={baseUrl}
+                serverUrl={serverUrl}
+              />
+            }
+          />
+          <Route
+            path="/myfavorites"
+            element={<MyFavorites serverUrl={serverUrl} />}
+          />
+          <Route path="/signup" element={<SignUp serverUrl={serverUrl} />} />
+          <Route path="/signin" element={<SignIn serverUrl={serverUrl} />} />
         </Routes>
-
       </BrowserRouter>
-    </ThemeContextProvider>
-  )
+    </CombinedContextProvider>
+  );
 }
 
-export default App
+export default App;

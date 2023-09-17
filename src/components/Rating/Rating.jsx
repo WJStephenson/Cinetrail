@@ -1,21 +1,21 @@
-import React from 'react'
-import './Rating.css'
-import StarRatings from 'react-star-ratings'
+import React from "react";
+import "./Rating.css";
+import StarRatings from "react-star-ratings";
 
-function Rating({ movieRating }) {
-    return (
-        <div>
-            <StarRatings 
-                rating={movieRating}
-                starRatedColor={'var(--red)'}
-                starEmptyColor='grey'
-                numberOfStars={5}
-                name='rating'
-                starDimension='15px'
-                starSpacing='1px'
-            />
-        </div>
-    )
-}
+const Rating = ({ movieRating }) => {
+  return (
+    <div className="rating">
+      <StarRatings
+        rating={movieRating}
+        numberOfStars={5}
+        name="rating"
+        starDimension="15px"
+        starSpacing="1px"
+        starRatedColor="#e50916"
+        starEmptyColor="grey"
+      />
+    </div>
+  );
+};
 
-export default Rating
+export default Rating;
